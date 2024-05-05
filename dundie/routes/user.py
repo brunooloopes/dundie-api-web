@@ -3,9 +3,9 @@ from typing import List
 from fastapi import APIRouter
 from fastapi.exceptions import HTTPException
 from sqlmodel import Session, select
-
-from dundie.db import ActiveSession
 from dundie.models.user import User, UserRequest, UserResponse
+from dundie.db import ActiveSession
+
 
 router = APIRouter()
 
@@ -34,6 +34,6 @@ async def create_user(*, session: Session = ActiveSession, user: UserRequest):
     """Creates new user"""
     db_user = User.from_orm(user)  # transform UserRequest in User
     session.add(db_user)
-    session.commit()
+    session.commit()  # TODO: tratar error do banco
     session.refresh(db_user)
     return db_user
